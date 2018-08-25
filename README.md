@@ -4,19 +4,20 @@
 
 - Elasticsearch
 - Python 3
+- jq
 
 On Windows install through [Choco](https://chocolatey.org/docs/installation) by
 running the following command:
 
 ```bash
-choco install -y python3 elasticsearch
+choco install -y python3 elasticsearch jq
 ```
 
 On Mac install through [Homebrew](https://brew.sh/) by running the following
 commands:
 
 ```bash
-brew install python3 elasticsearch
+brew install python3 elasticsearch jq
 ```
 
-
+On Windows install Git for Windows as well
