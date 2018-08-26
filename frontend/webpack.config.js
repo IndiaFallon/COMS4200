@@ -14,10 +14,10 @@ module.exports = {
                 loader: "babel-loader",
                 options: { presets: ["env"] }
             },
-            // CSS
+            // SCSS
             {
-                test: /\.css$/,
-                use: [ "style-loader", "css-loader" ]
+                test: /\.scss$/,
+                use: [ "style-loader", "css-loader", "sass-loader" ]
             }
         ]
     },
