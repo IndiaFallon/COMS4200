@@ -1,2 +1,26 @@
 @charset "utf-8";
-@import "bulma/bulma.sass";
+
+$bg: #000010;
+$bg-lighter: #120017;
+$text: white;
+
+$background: $text;
+$body-background-color: $bg;
+$primary: #FF756D;
+
+// Cards
+$card-background-color: $bg-lighter;
+$card-color: $text;
+$card-header-color: $text;
+
+// Tables
+$table-background-color: $bg-lighter;
+$table-color: $text;
+$table-cell-heading-color: $text;
+$table-cell-border: 1px solid #22002B;
+
+@import "../node_modules/bulma/bulma.sass";
+
+html, body, #app {
+    height: 100%;
+}

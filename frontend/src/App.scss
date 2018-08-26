@@ -1,0 +1,19 @@
+.App {
+    display: grid;
+    grid-template-columns: auto 25%;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "map sidebar";
+
+    height: 100%;
+
+}
+
+.App-map {
+    grid-area: map;
+}
+
+.App-sidebar {
+    grid-area: sidebar;
+    border: 1px black;
+}
