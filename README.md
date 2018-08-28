@@ -21,3 +21,10 @@ brew install python3 elasticsearch jq kibana
 ```
 
 On Windows install Git for Windows as well
+
+## Setting `path.repo` in elasticsearch
+
+On windows the path is:
+```
+C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-6.3.0\config\elasticsearch.yml
+```
