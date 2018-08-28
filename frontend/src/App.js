@@ -61,7 +61,16 @@ class App extends Component{
                         elasticReady={this.state.elasticReady}
                         elasticStatus={this.state.elasticStatus}
                     />
-                    <a className="button is-primary">Primary</a>
+                    <ElasticStatus
+                        client={this.client}
+                        elasticReady={this.state.elasticReady}
+                        elasticStatus={this.state.elasticStatus}
+                    />
+                    <ElasticStatus
+                        client={this.client}
+                        elasticReady={this.state.elasticReady}
+                        elasticStatus={this.state.elasticStatus}
+                    />
                 </div>
             </div>
         );
