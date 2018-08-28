@@ -16,7 +16,7 @@ curl -X PUT "localhost:9200/_snapshot/backup" -H "Content-Type: application/json
     \"location\": \"$SNAPSHOT\"
   }
 }
-" | jq
+" | jq .
 
 # Load up the snapshot
-curl -X POST "localhost:9200/_snapshot/backup/snapshot_1/_restore" | jq
+curl -X POST "localhost:9200/_snapshot/backup/snapshot_1/_restore" | jq .
