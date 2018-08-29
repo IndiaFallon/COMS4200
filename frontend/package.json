@@ -26,8 +26,10 @@
   },
   "dependencies": {
     "bulma": "^0.7.1",
+    "deck.gl": "^6.0.3",
     "elasticsearch": "^15.1.1",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "react-map-gl": "^3.3.4"
   }
 }
