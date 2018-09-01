@@ -1,6 +1,6 @@
 import React, { Component} from "react";
 import elasticsearch from "elasticsearch";
-import DeckGL from "deck.gl";
+import DeckGL, { ArcLayer } from "deck.gl";
 import { StaticMap } from "react-map-gl";
 import "./App.scss";
 
@@ -26,6 +26,9 @@ class App extends Component{
             zoom: 13,
             pitch: 60,
             bearing: 30,
+
+            // Dummy data
+            ipData: {},
         };
 
         // The elasticsearch cluster
@@ -56,6 +59,9 @@ class App extends Component{
             this.setState({elasticReady: false});
             this.setState({elasticStatus: "Down"});
         });
+
+        // Fetch the dummy data
+        fetch("/out.json").then(r => r.json()).then(r => this.setState({ipData: r}));
     }
 
     componentWillUnmount() {
@@ -69,6 +75,7 @@ class App extends Component{
                     <DeckGL
                         initialViewState={this.state}
                         controller={true}
+                        layers={this.renderLayers()}
                     >
                         <StaticMap
                             reuseMaps
@@ -87,6 +94,24 @@ class App extends Component{
                 </div>
             </div>
         );
+    }
+
+    renderLayers() {
+        return [
+            new ArcLayer({
+                id: "arc",
+                data: this.state.ipData,
+                getSourcePosition: d => {
+                    return [d.src_latlng[1], d.src_latlng[0]];
+                },
+                getTargetPosition: d => {
+                    return [d.dst_latlng[1], d.dst_latlng[0]];
+                },
+                getSourceColor: d => [255, 0, 0],
+                getTargetColor: d => [0, 255, 0],
+                strokeWidth: 4,
+            }),
+        ];
     }
 }
 
