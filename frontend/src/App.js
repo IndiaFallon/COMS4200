@@ -1,13 +1,10 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import elasticsearch from "elasticsearch";
-import DeckGL, { ArcLayer } from "deck.gl";
-import { StaticMap } from "react-map-gl";
 import "./App.scss";
 
 import ElasticStatus from "./components/ElasticStatus";
+import Map from "./components/Map";
 import { ELASTIC_CONFIG } from "./Elastic";
-
-const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicnBvcnRhcyIsImEiOiJlNDRkYjIwYzNlMzIyZjY4YjA0YmIyOTU4MGI3NWJkYiJ9.d7ofM7x51os38ReO9X0E6w";
 
 class App extends Component{
 
@@ -19,13 +16,6 @@ class App extends Component{
             elasticReady: false,
             // The human readable status of the elasticsearch connection
             elasticStatus: "Not Connected",
-
-            // Deck.gl viewport settings
-            longitude: 153.021072,
-            latitude: -27.470125,
-            zoom: 13,
-            pitch: 60,
-            bearing: 30,
 
             // Dummy data
             ipData: {},
@@ -72,17 +62,7 @@ class App extends Component{
         return(
             <div className="App">
                 <div className="App-map">
-                    <DeckGL
-                        initialViewState={this.state}
-                        controller={true}
-                        layers={this.renderLayers()}
-                    >
-                        <StaticMap
-                            reuseMaps
-                            mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-                            mapStyle="mapbox://styles/mapbox/dark-v9"
-                        />
-                    </DeckGL>
+                    <Map ipData={this.state.ipData} />
                 </div>
 
                 <div className="App-sidebar">
@@ -94,24 +74,6 @@ class App extends Component{
                 </div>
             </div>
         );
-    }
-
-    renderLayers() {
-        return [
-            new ArcLayer({
-                id: "arc",
-                data: this.state.ipData,
-                getSourcePosition: d => {
-                    return [d.src_latlng[1], d.src_latlng[0]];
-                },
-                getTargetPosition: d => {
-                    return [d.dst_latlng[1], d.dst_latlng[0]];
-                },
-                getSourceColor: d => [255, 0, 0],
-                getTargetColor: d => [0, 255, 0],
-                strokeWidth: 4,
-            }),
-        ];
     }
 }
 
