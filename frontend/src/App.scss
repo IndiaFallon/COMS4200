@@ -1,9 +1,10 @@
 .App {
     display: grid;
-    grid-template-columns: auto 25%;
-    grid-template-rows: auto;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: auto 20%;
     grid-template-areas: 
-        "map sidebar";
+        "map sidebar"
+        "timeselector sidebar";
 
     height: 100%;
 
@@ -13,6 +14,10 @@
     grid-area: map;
 
     position: relative;
+}
+
+.App-time-selector {
+    grid-area: timeselector;
 }
 
 .App-sidebar {

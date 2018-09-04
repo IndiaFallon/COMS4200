@@ -4,6 +4,8 @@ import "./App.scss";
 
 import ElasticStatus from "./components/ElasticStatus";
 import Map from "./components/Map";
+import TimeSelector from "./components/TimeSelector";
+import DummyChart from "./components/DummyChart";
 import { ELASTIC_CONFIG } from "./Elastic";
 
 class App extends Component{
@@ -65,12 +67,18 @@ class App extends Component{
                     <Map ipData={this.state.ipData} />
                 </div>
 
+                <div className="App-time-selector">
+                    <TimeSelector />
+                </div>
+
                 <div className="App-sidebar">
                     <ElasticStatus
                         client={this.client}
                         elasticReady={this.state.elasticReady}
                         elasticStatus={this.state.elasticStatus}
                     />
+
+                    <DummyChart />
                 </div>
             </div>
         );
