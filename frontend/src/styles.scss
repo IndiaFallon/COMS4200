@@ -1,20 +1,23 @@
 @charset "utf-8";
 
-$bg: #000010;
-$text: white;
-$border: #252533;
+$bg: #181824;
+$text: #71e5ff;
+$border: #54567d;
 
-$background: $text;
-$body-background-color: $bg;
-$primary: #FF756D;
+$background: $bg;
+$body-background-color: #181824;
+
+$primary: #b3ccfa;
+$secondary: #afff84;
+
 
 // Cards
-$card-background-color: $bg;
-$card-color: $text;
-$card-header-color: $text;
+$card-background-color: #292a3d;
+$card-color: #8698bb;
+$card-header-color: #8698bb;
 
 // Tables
-$table-background-color: $bg;
+$table-background-color: transparent;
 $table-color: $text;
 $table-cell-heading-color: $text;
 $table-cell-border: 1px solid $border;

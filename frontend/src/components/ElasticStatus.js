@@ -5,7 +5,7 @@
 import React, { Component} from "react";
 import { getDocumentCount } from "../Elastic";
 
-class ElasticStatus extends Component{
+class ElasticStatus extends Component {
 
     constructor(props) {
         super(props);
@@ -78,19 +78,19 @@ class ElasticStatus extends Component{
     renderContent() {
         if (!this.state.hidden) {
             return (
-                    <div style={{width: "100%"}}>
-                        <table className="table is-bordered" style={{width: "100%", marginBottom: "0px"}}>
-                            <tbody>
-                                <tr>
-                                    <td>Cluster Status:</td>
-                                    <td>{this.props.elasticStatus}</td>
-                                </tr>
-                                <tr>
-                                    <td>Record Count:</td>
-                                    <td>{this.state.recordCount}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div style={{width: "100%"}}>
+                    <table className="table is-bordered" style={{width: "100%", marginBottom: "0px"}}>
+                        <tbody>
+                            <tr>
+                                <td>Cluster Status:</td>
+                                <td>{this.props.elasticStatus}</td>
+                            </tr>
+                            <tr>
+                                <td>Record Count:</td>
+                                <td>{this.state.recordCount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             );
         }
