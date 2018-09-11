@@ -4,6 +4,7 @@ import {
     FlexibleXYPlot, XAxis, YAxis,
     VerticalRectSeries,
 } from "react-vis";
+import "./TimeSelector.scss";
 
 // 24 data points, one for each hour
 const testData = [
@@ -97,26 +98,28 @@ class TimeSelector extends Component {
 
     render() {
         return (
-            <FlexibleXYPlot
-                xDomain={[0, 24]}
-                yDomain={[0, 10]}
+            <div className="TimeSelector">
+                <FlexibleXYPlot
+                    xDomain={[0, 24]}
+                    yDomain={[0, 10]}
 
-                colorType="category"
-                colorRange={this.colorRange}
-                colorDomain={[0, 1, 2]}
-            >
-                <XAxis />
-                <YAxis />
-                <VerticalRectSeries
-                    data={this.parseData(testData)}
-                    onValueClick={this.onValueClick}
-                    onValueMouseOver={this.onValueMouseOver}
-                    onValueMouseOut={this.onValueMouseOut}
-                />
-                
-                <Crosshair values={this.state.crosshairValues}>
-                </Crosshair>
-            </FlexibleXYPlot>
+                    colorType="category"
+                    colorRange={this.colorRange}
+                    colorDomain={[0, 1, 2]}
+                >
+                    <XAxis />
+                    <YAxis />
+                    <VerticalRectSeries
+                        data={this.parseData(testData)}
+                        onValueClick={this.onValueClick}
+                        onValueMouseOver={this.onValueMouseOver}
+                        onValueMouseOut={this.onValueMouseOut}
+                    />
+                    
+                    <Crosshair values={this.state.crosshairValues}>
+                    </Crosshair>
+                </FlexibleXYPlot>
+            </div>
         );
     }
 }

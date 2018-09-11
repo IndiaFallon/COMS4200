@@ -1,29 +1,6 @@
 @charset "utf-8";
 
-
-$bg: #181824;
-$text: #71e5ff;
-$border: #54567d;
-$link: #afff84;
-
-$background: $bg;
-$body-background-color: #181824;
-
-$primary: #b3ccfa;
-$secondary: #afff84;
-
-
-// Cards
-$card-background-color: #292a3d;
-$card-color: #8698bb;
-$card-header-color: #8698bb;
-
-// Tables
-$table-background-color: transparent;
-$table-color: $text;
-$table-cell-heading-color: $text;
-$table-cell-border: 1px solid $border;
-
+@import "./variables.scss";
 @import "../node_modules/bulma/bulma.sass";
 @import "../node_modules/react-vis/dist/style.css";
 
