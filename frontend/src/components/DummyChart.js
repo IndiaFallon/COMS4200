@@ -6,6 +6,7 @@ import {
     YAxis,
     VerticalRectSeries,
 } from "react-vis";
+import Card from "./Card";
 
 const data = [
     {x: 0, y: 8},
@@ -21,55 +22,9 @@ const data = [
 ];
 
 class DummyChart extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            hidden: false,
-        };
-
-        this.toggleHidden = this.toggleHidden.bind(this);
-    }
-
-    toggleHidden() {
-        this.setState({hidden: !this.state.hidden});
-    }
-
     render() {
         return (
-            <div className="card">
-                <header className="card-header">
-                    <p className="card-header-title">
-                        Chart
-                    </p>
-                    <a onClick={this.toggleHidden} className="card-header-icon">
-                        <span className="icon">
-                            {this.renderArrow()}
-                        </span>
-                    </a>
-                </header>
-
-                {this.renderChart()}
-
-            </div>
-        );
-    }
-
-    renderArrow() {
-        if (this.state.hidden) {
-            return (
-                <i className="fas fa-angle-left" aria-hidden="true" />
-            );
-        } else {
-            return (
-                <i className="fas fa-angle-down" aria-hidden="true" />
-            );
-        }
-    }
-
-    renderChart() {
-        if (!this.state.hidden) {
-            return (
+            <Card title="Chart">
                 <div style={{"height": "200px"}}>
                     <FlexibleXYPlot>
                         <XAxis />
@@ -77,8 +32,8 @@ class DummyChart extends Component {
                         <LineSeries data={data} />
                     </FlexibleXYPlot>
                 </div>
-            );
-        }
+            </Card>
+        );
     }
 }
 

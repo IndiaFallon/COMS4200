@@ -14,7 +14,6 @@ export const ELASTIC_CONFIG = {
  * Gets the document count from Elastic, returning a promise
  */
 export function getDocumentCount(client) {
-    console.log("Getting document count");
     return client.count({
         index: ELASTIC_CONFIG.index,
     }).then(resp => {

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import {
     Crosshair,
-    FlexibleXYPlot,
-    XAxis,
-    YAxis,
+    FlexibleXYPlot, XAxis, YAxis,
     VerticalRectSeries,
 } from "react-vis";
 
@@ -34,8 +32,7 @@ const testData = [
     6,
     5,
     2,
-];
-
+]; 
 class TimeSelector extends Component {
     constructor(props) {
         super(props);
@@ -44,10 +41,19 @@ class TimeSelector extends Component {
             crosshairValues: [],
         }
 
-        this.onNearestX = this.onNearestX.bind(this);
+        // The colour range to use, 0 is the default
+        // and 1 is the selected colour
+        this.colorRange = [
+            "#b3ccfa",
+            "#ff8a01",
+        ];
+
+        this.onValueClick = this.onValueClick.bind(this);
     }
 
     parseData(data) {
+        const { selectedHour } = this.props;
+
         let hour = 0;
         let output = [];
 
@@ -56,6 +62,7 @@ class TimeSelector extends Component {
                 x0: hour,
                 x: hour+1,
                 y: data[i],
+                color: selectedHour == hour ? 0 : 1,
             });
 
             hour++;
@@ -64,10 +71,8 @@ class TimeSelector extends Component {
         return output;
     }
 
-    onNearestX(value, obj) {
-        if (obj.index) {
-            // this.setState({crosshairValues: testData[obj.index]});
-        }
+    onValueClick(d, obj) {
+        this.props.setSelectedHour(d.x0);
     }
 
     render() {
@@ -75,12 +80,15 @@ class TimeSelector extends Component {
             <FlexibleXYPlot
                 xDomain={[0, 24]}
                 yDomain={[0, 10]}
+
+                colorType="category"
+                colorRange={this.colorRange}
             >
                 <XAxis />
                 <YAxis />
                 <VerticalRectSeries
                     data={this.parseData(testData)}
-                    onNearestX={this.onNearestX}
+                    onValueClick={this.onValueClick}
                 />
                 
                 <Crosshair values={this.state.crosshairValues}>

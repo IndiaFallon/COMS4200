@@ -24,7 +24,7 @@ class Card extends Component {
         const { title } = this.props;
 
         return(
-            <div className="card">
+            <div className="card Card">
                 <header className="card-header">
                     <p className="card-header-title">
                         {title}
@@ -57,10 +57,12 @@ class Card extends Component {
     renderContent() {
         if (!this.state.hidden) {
             return (
-                <div style={{width: "100%"}}>
+                <div className="Card-content">
                     {this.props.children}
                 </div>
             );
         }
     }
 }
+
+export default Card;

@@ -21,12 +21,18 @@ class App extends Component{
 
             // Dummy data
             ipData: {},
+
+            // The selected hour
+            selectedHour: null,
         };
 
         // The elasticsearch cluster
         this.client = null;
 
         this.ping = null;
+
+        // Bind functions
+        this.setSelectedHour = this.setSelectedHour.bind(this);
     }
 
     componentDidMount() {
@@ -64,11 +70,17 @@ class App extends Component{
         return(
             <div className="App">
                 <div className="App-map">
-                    <Map ipData={this.state.ipData} />
+                    <Map
+                        selectedHour={this.state.selectedHour}
+                        ipData={this.state.ipData} 
+                    />
                 </div>
 
                 <div className="App-time-selector">
-                    <TimeSelector />
+                    <TimeSelector 
+                        selectedHour={this.state.selectedHour}
+                        setSelectedHour={this.setSelectedHour}
+                    />
                 </div>
 
                 <div className="App-sidebar">
@@ -82,6 +94,10 @@ class App extends Component{
                 </div>
             </div>
         );
+    }
+
+    setSelectedHour(hour) {
+        this.setState({selectedHour: hour});
     }
 }
 
