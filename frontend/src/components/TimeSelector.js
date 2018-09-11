@@ -39,16 +39,20 @@ class TimeSelector extends Component {
 
         this.state = {
             crosshairValues: [],
+            hoveredHour: null,
         }
 
         // The colour range to use, 0 is the default
         // and 1 is the selected colour
         this.colorRange = [
-            "#b3ccfa",
-            "#ff8a01",
+            "blue",
+            "yellow",
+            "red",
         ];
 
         this.onValueClick = this.onValueClick.bind(this);
+        this.onValueMouseOver = this.onValueMouseOver.bind(this);
+        this.onValueMouseOut = this.onValueMouseOut.bind(this);
     }
 
     parseData(data) {
@@ -58,11 +62,19 @@ class TimeSelector extends Component {
         let output = [];
 
         for (let i = 0; i < data.length; i++) {
+
+            let color = 0;
+            if (hour == selectedHour) {
+                color = 2;
+            } else if (hour == this.state.hoveredHour) {
+                color = 1;
+            }
+
             output.push({
                 x0: hour,
                 x: hour+1,
                 y: data[i],
-                color: selectedHour == hour ? 0 : 1,
+                color: color,
             });
 
             hour++;
@@ -75,6 +87,14 @@ class TimeSelector extends Component {
         this.props.setSelectedHour(d.x0);
     }
 
+    onValueMouseOver(d, obj) {
+        this.setState({hoveredHour: d.x0});
+    }
+
+    onValueMouseOut(d, obj) {
+        this.setState({hoveredHour: null});
+    }
+
     render() {
         return (
             <FlexibleXYPlot
@@ -83,12 +103,15 @@ class TimeSelector extends Component {
 
                 colorType="category"
                 colorRange={this.colorRange}
+                colorDomain={[0, 1, 2]}
             >
                 <XAxis />
                 <YAxis />
                 <VerticalRectSeries
                     data={this.parseData(testData)}
                     onValueClick={this.onValueClick}
+                    onValueMouseOver={this.onValueMouseOver}
+                    onValueMouseOut={this.onValueMouseOut}
                 />
                 
                 <Crosshair values={this.state.crosshairValues}>
