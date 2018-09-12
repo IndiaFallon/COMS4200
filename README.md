@@ -75,4 +75,7 @@ Finally run the script within a bash environment (either Terminal for Mac or Git
 Run the script using `./load_snapshots.sh`
 
 ## Fixing CORS Issues
-Set `http.cors.allow-origin: *` config file
+
+Set the following options in the config:
+- `http.cors.enabled: true`
+- `http.cors.allow-origin: "*"`
