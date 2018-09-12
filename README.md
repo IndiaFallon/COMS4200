@@ -79,3 +79,11 @@ Run the script using `./load_snapshots.sh`
 Set the following options in the config:
 - `http.cors.enabled: true`
 - `http.cors.allow-origin: "*"`
+
+## Running Kibana
+On Windows open either command prompt or powershell with **admin** privileges and go to 
+`C:\ProgramData\chocolatey\lib\kibana\tools\kibana-6.2.4-windows-x86_64\bin` and run
+
+```
+kibana
+```
