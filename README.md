@@ -73,3 +73,6 @@ The format of the path is similar to `path.repo` path added earlier.
 Finally run the script within a bash environment (either Terminal for Mac or Git Bash for Windows). Git Bash was installed with the Git for Windows package.
 
 Run the script using `./load_snapshots.sh`
+
+## Fixing CORS Issues
+Set `http.cors.allow-origin: *` config file
