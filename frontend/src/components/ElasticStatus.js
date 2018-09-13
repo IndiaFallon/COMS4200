@@ -26,7 +26,6 @@ class ElasticStatus extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.elasticReady != prevProps.elasticReady && this.props.elasticReady) {
-            console.log("Getting document count");
             getDocumentCount(this.props.client)
                 .then(count => {
                     this.setState({recordCount: count});

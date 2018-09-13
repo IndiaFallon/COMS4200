@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { getHourlyAggregates } from "../Elastic";
 import {
     Crosshair,
-    FlexibleXYPlot, XAxis, YAxis,
+    FlexibleXYPlot,
+    XAxis,
+    YAxis,
     VerticalRectSeries,
 } from "react-vis";
 import "./TimeSelector.scss";
@@ -34,6 +37,7 @@ const testData = [
     5,
     2,
 ]; 
+
 class TimeSelector extends Component {
     constructor(props) {
         super(props);
@@ -41,6 +45,7 @@ class TimeSelector extends Component {
         this.state = {
             crosshairValues: [],
             hoveredHour: null,
+            data: [],
         }
 
         // The colour range to use, 0 is the default
@@ -54,6 +59,16 @@ class TimeSelector extends Component {
         this.onValueClick = this.onValueClick.bind(this);
         this.onValueMouseOver = this.onValueMouseOver.bind(this);
         this.onValueMouseOut = this.onValueMouseOut.bind(this);
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.elasticReady != prevProps.elasticReady) {
+            this.getData();
+        }
     }
 
     parseData(data) {
@@ -74,7 +89,7 @@ class TimeSelector extends Component {
             output.push({
                 x0: hour,
                 x: hour+1,
-                y: data[i],
+                y: data[i].y,
                 color: color,
             });
 
@@ -82,6 +97,19 @@ class TimeSelector extends Component {
         }
 
         return output;
+    }
+
+    /*
+     * Fetches the data from ElasticSearch
+     */
+    getData() {
+        const { elasticReady, client } = this.props;
+
+        if (elasticReady) {
+            getHourlyAggregates(client, 0, 0).then(data => {
+                this.setState({data}); 
+            });
+        }
     }
 
     onValueClick(d, obj) {
@@ -95,22 +123,25 @@ class TimeSelector extends Component {
     onValueMouseOut(d, obj) {
         this.setState({hoveredHour: null});
     }
-
     render() {
+
+        // On render, query the data
+
         return (
             <div className="TimeSelector">
                 <FlexibleXYPlot
-                    xDomain={[0, 24]}
-                    yDomain={[0, 10]}
+                    xDomain={[0, 26]}
 
                     colorType="category"
                     colorRange={this.colorRange}
                     colorDomain={[0, 1, 2]}
+
+                    margin={{left: 5, right: 5, top: 5, bottom: 0}}
                 >
-                    <XAxis />
-                    <YAxis />
+                    <XAxis hideTicks hideLine />
+                    <YAxis hideTicks hideLine />
                     <VerticalRectSeries
-                        data={this.parseData(testData)}
+                        data={this.parseData(this.state.data)}
                         onValueClick={this.onValueClick}
                         onValueMouseOver={this.onValueMouseOver}
                         onValueMouseOut={this.onValueMouseOut}

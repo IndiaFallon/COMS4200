@@ -80,6 +80,9 @@ class App extends Component{
                     <TimeSelector 
                         selectedHour={this.state.selectedHour}
                         setSelectedHour={this.setSelectedHour}
+
+                        client={this.client}
+                        elasticReady={this.state.elasticReady}
                     />
                 </div>
 
