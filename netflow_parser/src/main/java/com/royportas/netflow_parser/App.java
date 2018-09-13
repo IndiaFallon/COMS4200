@@ -1,35 +1,54 @@
 package com.royportas.netflow_parser;
 
 import java.io.File;
+import com.beust.jcommander.*;
+
+class Args {
+    @Parameter(
+        names={"--in", "-i"},
+        description="The CSV file to process",
+        required=true
+    )
+    String inFile;
+
+    @Parameter(
+        names={"--out", "-o"},
+        description="The CSV file to write to result to",
+        required=true
+    )
+    String outFile;
+
+    @Parameter(
+        names={"--db", "-d"},
+        description="The MaxMind GeoLite2 City database to use",
+        required=true
+    )
+    String database;
+}
 
 /*
  * The entrypoint
  */
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] argv) throws Exception {
 
-        /*
-        if (args.length < 1) {
-            System.err.println("Needs one parameter, in filename");
-            System.exit(1);
-        }
-        */
+        Args args = new Args();
 
-        // The in filename of the CSV
-        String netflowFile = "/Volumes/Elements/nprobe-21.07.2017/nprobe-21.07.2017.csv";
-
-        if (!App.exists(netflowFile)) {
-            System.err.println("Netflow path is incorrect");
+        JCommander.newBuilder()
+            .addObject(args)
+            .build()
+            .parse(argv);
+        
+        if (!App.exists(args.inFile)) {
+            System.err.println("inFile path is incorrect");
         }
 
-        String maxmindDatabase = "GeoLite2-City.mmdb";
-
-        if (!App.exists(maxmindDatabase)) {
-            System.err.println("Maxmind database path is incorrect");
+        if (!App.exists(args.database)) {
+            System.err.println("DB path is incorrect");
         }
 
-        NProbe nprobe = new NProbe(maxmindDatabase);
-        nprobe.parse(netflowFile, "outfile.csv");
+        NProbe nprobe = new NProbe(args.database);
+        nprobe.parse(args.inFile, args.outFile);
     }
 
     public static Boolean exists(String filename) {

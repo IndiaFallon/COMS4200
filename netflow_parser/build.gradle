@@ -16,14 +16,19 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
-// Define the main class for the application
-mainClassName = 'com.royportas.netflow_parser.App'
-
 dependencies {
     compile 'com.maxmind.geoip2:geoip2:2.12.0'
     compile 'com.maxmind.db:maxmind-db:1.2.2'
     compile 'org.apache.commons:commons-csv:1.5'
     compile 'me.tongfei:progressbar:0.7.1'
+    compile 'com.beust:jcommander:1.72'
+}
+
+// Define the main class for the application
+mainClassName = 'com.royportas.netflow_parser.App'
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 // In this section you declare where to find the dependencies of your project

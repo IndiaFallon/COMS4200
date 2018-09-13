@@ -94,15 +94,15 @@ public class NProbe {
         }
         
         // Convert the record to a map, which we can edit
-        Map map = record.toMap();
+        Map<String, String> map = record.toMap();
 
         // Add the new fields to the record
-        map.put("SRC_LATITUDE", src.latitude);
-        map.put("SRC_LONGITUDE", src.longitude);
+        map.put("SRC_LATITUDE", Double.toString(src.latitude));
+        map.put("SRC_LONGITUDE", Double.toString(src.longitude));
         map.put("SRC_CITY", src.city);
 
-        map.put("DST_LATITUDE", dst.latitude);
-        map.put("DST_LONGITUDE", dst.longitude);
+        map.put("DST_LATITUDE", Double.toString(dst.latitude));
+        map.put("DST_LONGITUDE", Double.toString(dst.longitude));
         map.put("DST_CITY", dst.city);
 
         // Write the CSV to file
@@ -129,10 +129,20 @@ public class NProbe {
             // Lookup the IP address
             CityResponse response = this.maxmind.city(ipAddr);
             City city = response.getCity();
-            record.city = city.getName();
+            if (city.getName() != null) {
+                record.city = city.getName();
+            } else {
+                record.city = "Unknown";
+            }
 
             // Parse the location
             Location loc = response.getLocation();
+
+            if (loc.getLatitude() == null || loc.getLongitude() == null) {
+                // No meaningful data, bail out
+                return null;
+            }
+
             record.latitude = loc.getLatitude();
             record.longitude = loc.getLongitude();
 
