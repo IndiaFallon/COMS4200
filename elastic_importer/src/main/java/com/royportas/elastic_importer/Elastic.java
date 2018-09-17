@@ -14,6 +14,10 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.apache.http.HttpHost;
 
 public class Elastic {
@@ -44,7 +48,7 @@ public class Elastic {
         this.port = 9200;
         this.method = "http";
 
-        this.index = "geonetflow";
+        this.index = "geonetflow2";
         this.type = "record";
 
         System.out.format(
@@ -70,13 +74,6 @@ public class Elastic {
         } catch (IOException io) {
             throw new Exception("Could not connect to Elasticsearch cluster");
         }
-
-        // Map<String, String> jsonMap = new HashMap<String, String>();
-        // jsonMap.put("name", "Bob");
-        // jsonMap.put("age", "22");
-        // IndexRequest request = new IndexRequest("test", "person", "1").source(jsonMap);
-
-        // this.client.index(request, RequestOptions.DEFAULT);
     }
 
     public void createBulkRequest() {
@@ -116,5 +113,85 @@ public class Elastic {
         if (this.client != null) {
             this.client.close();
         }
+    }
+
+    public void createIndex() throws IOException {
+        System.out.println("Sending index creation request");
+        CreateIndexRequest request = new CreateIndexRequest(this.index);
+        CreateIndexResponse response = this.client.indices().create(request, RequestOptions.DEFAULT);
+
+        if (response.isAcknowledged()) {
+            System.out.println("Cluster acknowledged create index request");
+        } else {
+            System.err.println("Cluster failed to acknowledge create index request");
+        }
+    }
+
+    public void setMapping() throws IOException {
+        Map<String, Object> mapping = new HashMap<String, Object>();
+
+        // The properties of the mapping
+        Map<String, Object> properties = new HashMap<String, Object>();
+        mapping.put("properties", properties); 
+
+        // Set the types
+        this.setField(properties, "APPLICATION_ID", "integer");
+        this.setField(properties, "DOWNSTREAM_SESSION_ID", "integer");
+        this.setField(properties, "DOWNSTREAM_TUNNEL_ID", "integer");
+        this.setField(properties, "DST_CITY", "text");
+        this.setField(properties, "DST_LATITUDE", "double");
+        this.setField(properties, "DST_LONGITUDE", "double");
+        this.setField(properties, "ENGINE_ID", "integer");
+        this.setField(properties, "FIRST_SWITCHED", "integer");
+        this.setField(properties, "FLOW_ID", "integer");
+        this.setField(properties, "FLOW_PROTO_PORT", "integer");
+        this.setField(properties, "IN_BYTES", "integer");
+        this.setField(properties, "IN_PKTS", "integer");
+        this.setField(properties, "IPV4_DST_ADDR", "ip");
+        this.setField(properties, "IPV4_SRC_ADDR", "ip");
+        this.setField(properties, "L4_DST_PORT", "integer");
+        this.setField(properties, "L4_SRC_PORT", "integer");
+        this.setField(properties, "L7_PROTO", "integer");
+        this.setField(properties, "L7_PROTO_NAME", "text");
+        this.setField(properties, "LAST_SWITCHED", "integer");
+        this.setField(properties, "NPROBE_IPV4_ADDRESS", "ip");
+        this.setField(properties, "OUT_BYTES", "integer");
+        this.setField(properties, "OUT_PKTS", "integer");
+        this.setField(properties, "PROTOCOL", "integer");
+        this.setField(properties, "PROTOCOL_MAP", "text");
+        this.setField(properties, "SRC_CITY", "text");
+        this.setField(properties, "SRC_LATITUDE", "double");
+        this.setField(properties, "SRC_LONGITUDE", "double");
+        this.setField(properties, "SRC_TOS", "integer");
+        this.setField(properties, "SRC_VLAN", "integer");
+        this.setField(properties, "UNTUNNELED_IPV4_SRC_ADDR", "ip");
+        this.setField(properties, "UNTUNNELED_PROTOCOL", "integer");
+        this.setField(properties, "UPSTREAM_SESSION_ID", "integer");
+        this.setField(properties, "UPSTREAM_TUNNEL_ID", "integer");
+
+        System.out.println("Creating Type Mapping");
+        PutMappingRequest request = new PutMappingRequest(this.index).source(mapping);
+        request.type(this.type);
+        PutMappingResponse mappingResponse = this.client.indices().putMapping(request, RequestOptions.DEFAULT);
+
+        if (mappingResponse.isAcknowledged()) {
+            System.out.println("Cluster acknowledged mapping request");
+        } else {
+            System.err.println("Cluster failed to acknowledge mapping request");
+        }
+
+    }
+
+    /**
+     * Sets the type of the field
+     *
+     * @param name  Name of the field
+     * @param type  Type of the field
+     */
+    public void setField(Map<String, Object> properties, String name, String type) {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("type", type);
+
+        properties.put(name, options);
     }
 }

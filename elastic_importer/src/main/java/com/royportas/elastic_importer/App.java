@@ -42,6 +42,8 @@ public class App {
         // Start the Elastic client
         try {
             elastic = new Elastic();
+            elastic.createIndex();
+            elastic.setMapping();
 
             NProbe nprobe = new NProbe();
             nprobe.parse(args.csvFilename, elastic);
