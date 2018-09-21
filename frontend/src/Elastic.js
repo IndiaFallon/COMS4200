@@ -119,7 +119,7 @@ export function getMapData(client, startTime, endTime) {
                         dstIp: dstBucket.key,
                         dstLat: dstBucket.DST_LATITUDE.value,
                         dstLon: dstBucket.DST_LONGITUDE.value,
-                        totalBytes: dstBucket.SUM_IN_BYTES,
+                        totalBytes: dstBucket.SUM_IN_BYTES.value,
                     });
                 });
             });

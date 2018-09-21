@@ -76,30 +76,46 @@ class Map extends Component {
         );
     }
 
+    /**
+     * Renders the layers onto the map
+     */
     renderLayers() {
 
-        if (this.props.ipData.length == 0) {
-            return [];
+        const layers = [];
+
+        if (this.props.ipData.length != 0) {
+
+            let maxBytes = 1;
+            for (let i = 0; i < this.props.ipData.length; i++) {
+                const bytes = this.props.ipData[i].totalBytes;
+                if (bytes > maxBytes) {
+                    maxBytes = bytes;
+                }
+            }
+
+            window.out = [];
+
+            layers.push(
+                new ArcLayer({
+                    id: "arc",
+                    data: this.props.ipData,
+                    getSourcePosition: d => {
+                        return [d.srcLon, d.srcLat];
+                    },
+                    getTargetPosition: d => {
+                        return [d.dstLon, d.dstLat];
+                    },
+                    getSourceColor: d => [0, 255, 0],
+                    getTargetColor: d => [255, 0, 0, this.state.alpha],
+                    updateTriggers: {
+                        getTargetColor: this.state.alpha,
+                    },
+                    getStrokeWidth: d => (Math.log(d.totalBytes / maxBytes) + 20) / 4,
+                })
+            );
         }
 
-        return [
-            new ArcLayer({
-                id: "arc",
-                data: this.props.ipData,
-                getSourcePosition: d => {
-                    return [d.srcLon, d.srcLat];
-                },
-                getTargetPosition: d => {
-                    return [d.dstLon, d.dstLat];
-                },
-                getSourceColor: d => [0, 255, 0],
-                getTargetColor: d => [255, 0, 0, this.state.alpha],
-                updateTriggers: {
-                    getTargetColor: this.state.alpha,
-                },
-                strokeWidth: 4,
-            }),
-        ];
+        return layers;
     }
 }
 
