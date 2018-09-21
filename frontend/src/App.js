@@ -6,7 +6,7 @@ import ElasticStatus from "./components/ElasticStatus";
 import Map from "./components/Map";
 import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
-import { ELASTIC_CONFIG } from "./Elastic";
+import { getMapData, ELASTIC_CONFIG } from "./Elastic";
 
 class App extends Component{
 
@@ -53,13 +53,13 @@ class App extends Component{
         }).then((result, reject) => {
             this.setState({elasticReady: true});
             this.setState({elasticStatus: "Connected"});
+
+            // Fetch the map data
+            getMapData(client, 1, 1).then(r => this.setState({ipData: r}));
         }).catch(err => {
             this.setState({elasticReady: false});
             this.setState({elasticStatus: "Down"});
         });
-
-        // Fetch the dummy data
-        fetch("/out.json").then(r => r.json()).then(r => this.setState({ipData: r}));
     }
 
     componentWillUnmount() {

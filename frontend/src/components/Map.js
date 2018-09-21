@@ -77,15 +77,20 @@ class Map extends Component {
     }
 
     renderLayers() {
+
+        if (this.props.ipData.length == 0) {
+            return [];
+        }
+
         return [
             new ArcLayer({
                 id: "arc",
                 data: this.props.ipData,
                 getSourcePosition: d => {
-                    return [d.src_latlng[1], d.src_latlng[0]];
+                    return [d.srcLon, d.srcLat];
                 },
                 getTargetPosition: d => {
-                    return [d.dst_latlng[1], d.dst_latlng[0]];
+                    return [d.dstLon, d.dstLat];
                 },
                 getSourceColor: d => [0, 255, 0],
                 getTargetColor: d => [255, 0, 0, this.state.alpha],

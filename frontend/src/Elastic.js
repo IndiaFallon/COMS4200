@@ -3,8 +3,8 @@
  */
 
 export const ELASTIC_CONFIG = {
-    INDEX: "nprobe-2017.07.21",
-    TYPE: "flows",
+    INDEX: "geonetflow2",
+    TYPE: "record",
     HOST: "localhost:9200",
     // Change this after debugging is finished
     LOG: "warning",
@@ -24,6 +24,114 @@ export function getDocumentCount(client) {
     });
 }
 
+export function getMapData(client, startTime, endTime) {
+    return client.search({
+        index: ELASTIC_CONFIG.index,
+        type: ELASTIC_CONFIG.type,
+        timeout: "30m",
+        body: {
+            "size": 0,
+            "aggs": {
+                "unique_src": {
+                    "terms": {
+                        "field": "IPV4_SRC_ADDR",
+                        "size": 400
+                    },
+                    "aggs": {
+                        "SUM_IN_BYTES": {
+                            "sum": {
+                                "field": "IN_BYTES"
+                            }
+                        },
+                        "unique_dst": {
+                            "terms": {
+                                "field": "IPV4_DST_ADDR",
+                                "size": 400
+                            },
+                            "aggs": {
+                                "SUM_IN_BYTES": {
+                                    "sum": {
+                                        "field": "IN_BYTES"
+                                    }
+                                },
+                                "DST_LATITUDE": {
+                                    "min": {
+                                        "field": "DST_LATITUDE"
+                                    }
+                                },
+                                "DST_LONGITUDE": {
+                                    "min": {
+                                        "field": "DST_LONGITUDE"
+                                    }
+                                },
+                                "SRC_LATITUDE": {
+                                    "min": {
+                                        "field": "SRC_LATITUDE"
+                                    }
+                                },
+                                "SRC_LONGITUDE": {
+                                    "min": {
+                                        "field": "SRC_LONGITUDE"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "stored_fields": [
+                "*"
+            ],
+            "docvalue_fields": [
+                "@timestamp"
+            ],
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": 1379647883664,
+                                    "lte": 1537414283665,
+                                    "format": "epoch_millis"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }).then(resp => {
+        if (resp) {
+            const results = [];
+
+            const srcBuckets = resp.aggregations.unique_src.buckets;
+            srcBuckets.forEach(srcBucket => {
+                const dstBuckets = srcBucket.unique_dst.buckets;
+                dstBuckets.forEach(dstBucket => {
+                    results.push({
+                        srcIp: srcBucket.key,
+                        srcLat: dstBucket.SRC_LATITUDE.value,
+                        srcLon: dstBucket.SRC_LONGITUDE.value,
+                        dstIp: dstBucket.key,
+                        dstLat: dstBucket.DST_LATITUDE.value,
+                        dstLon: dstBucket.DST_LONGITUDE.value,
+                        totalBytes: dstBucket.SUM_IN_BYTES,
+                    });
+                });
+            });
+            
+            console.log(results);
+            return results;
+        }
+
+        return [];
+    });
+}
+
 /**
  * Gets the hourly aggregates for the given startTime and endTime
  *
@@ -35,11 +143,11 @@ export function getDocumentCount(client) {
 export function getHourlyAggregates(client, startTime, endTime) {
     return client.search({
         index: ELASTIC_CONFIG.index,
-        type: "flows",
+        type: ELASTIC_CONFIG.type,
         // Query from Kibana
         body: {
             "aggs": {
-                "2": {
+                "per_hour": {
                     "date_histogram": {
                         "field": "@timestamp",
                         "interval": "1h",
@@ -47,7 +155,7 @@ export function getHourlyAggregates(client, startTime, endTime) {
                         "min_doc_count": 1
                     },
                     "aggs": {
-                        "1": {
+                        "total_packets": {
                             "sum": {
                                 "field": "OUT_BYTES"
                             }
@@ -79,10 +187,9 @@ export function getHourlyAggregates(client, startTime, endTime) {
         }
     }).then(resp => {
         if (resp) {
-            console.log(resp);
-            const values = resp.aggregations["2"].buckets.map(bucket => {
+            const values = resp.aggregations.per_hour.buckets.map(bucket => {
                 return {
-                    y: bucket["1"].value,
+                    y: bucket.total_packets.value,
                     name: bucket.key,
                 }
             });
