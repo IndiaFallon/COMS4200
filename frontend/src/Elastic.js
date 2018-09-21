@@ -94,8 +94,8 @@ export function getMapData(client, startTime, endTime) {
                         {
                             "range": {
                                 "@timestamp": {
-                                    "gte": 1379647883664,
-                                    "lte": 1537414283665,
+                                    "gte": startTime,
+                                    "lte": endTime,
                                     "format": "epoch_millis"
                                 }
                             }
@@ -124,7 +124,6 @@ export function getMapData(client, startTime, endTime) {
                 });
             });
             
-            console.log(results);
             return results;
         }
 

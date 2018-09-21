@@ -9,35 +9,6 @@ import {
 } from "react-vis";
 import "./TimeSelector.scss";
 
-// 24 data points, one for each hour
-const testData = [
-    2,
-    5,
-    1,
-    2,
-    4,
-    7,
-    2,
-    4,
-    9,
-    1,
-    3,
-    7,
-    8,
-    2,
-    5,
-    2,
-    6,
-    2,
-    5,
-    1,
-    5,
-    7,
-    6,
-    5,
-    2,
-]; 
-
 class TimeSelector extends Component {
     constructor(props) {
         super(props);
@@ -90,6 +61,7 @@ class TimeSelector extends Component {
                 x0: hour,
                 x: hour+1,
                 y: data[i].y,
+                timestamp: data[i].name,
                 color: color,
             });
 
@@ -107,13 +79,14 @@ class TimeSelector extends Component {
 
         if (elasticReady) {
             getHourlyAggregates(client, 0, 0).then(data => {
+                console.log(data);
                 this.setState({data}); 
             });
         }
     }
 
     onValueClick(d, obj) {
-        this.props.setSelectedHour(d.x0);
+        this.props.setHourAndTimestamp(d.x0, d.timestamp);
     }
 
     onValueMouseOver(d, obj) {

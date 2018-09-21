@@ -8,7 +8,7 @@ import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
 import { getMapData, ELASTIC_CONFIG } from "./Elastic";
 
-class App extends Component{
+class App extends Component {
 
     constructor(props) {
         super(props);
@@ -24,6 +24,10 @@ class App extends Component{
 
             // The selected hour
             selectedHour: null,
+
+            // The start and end timestamp
+            startTimestamp: null,
+            endTimestamp: null,
         };
 
         // The elasticsearch cluster
@@ -32,7 +36,7 @@ class App extends Component{
         this.ping = null;
 
         // Bind functions
-        this.setSelectedHour = this.setSelectedHour.bind(this);
+        this.setHourAndTimestamp = this.setHourAndTimestamp.bind(this);
     }
 
     componentDidMount() {
@@ -54,8 +58,6 @@ class App extends Component{
             this.setState({elasticReady: true});
             this.setState({elasticStatus: "Connected"});
 
-            // Fetch the map data
-            getMapData(client, 1, 1).then(r => this.setState({ipData: r}));
         }).catch(err => {
             this.setState({elasticReady: false});
             this.setState({elasticStatus: "Down"});
@@ -79,7 +81,7 @@ class App extends Component{
                 <div className="App-time-selector">
                     <TimeSelector 
                         selectedHour={this.state.selectedHour}
-                        setSelectedHour={this.setSelectedHour}
+                        setHourAndTimestamp={this.setHourAndTimestamp}
 
                         client={this.client}
                         elasticReady={this.state.elasticReady}
@@ -99,8 +101,18 @@ class App extends Component{
         );
     }
 
-    setSelectedHour(hour) {
-        this.setState({selectedHour: hour});
+    setHourAndTimestamp(hour, timestamp) {
+        const startTimestamp = timestamp;
+        const endTimestamp = timestamp + 3600000;
+
+        this.setState({
+            selectedHour: hour,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp
+        });
+
+        getMapData(client, startTimestamp, endTimestamp).then(r => this.setState({ipData: r}));
+
     }
 }
 

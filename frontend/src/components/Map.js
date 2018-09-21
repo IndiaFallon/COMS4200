@@ -93,8 +93,6 @@ class Map extends Component {
                 }
             }
 
-            window.out = [];
-
             layers.push(
                 new ArcLayer({
                     id: "arc",
