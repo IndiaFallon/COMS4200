@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getHourlyAggregates } from "../Elastic";
 import {
     Crosshair,
     FlexibleXYPlot,
@@ -16,7 +15,6 @@ class TimeSelector extends Component {
         this.state = {
             crosshairValues: [],
             hoveredHour: null,
-            data: [],
         }
 
         // The colour range to use, 0 is the default
@@ -30,16 +28,6 @@ class TimeSelector extends Component {
         this.onValueClick = this.onValueClick.bind(this);
         this.onValueMouseOver = this.onValueMouseOver.bind(this);
         this.onValueMouseOut = this.onValueMouseOut.bind(this);
-    }
-
-    componentDidMount() {
-        this.getData();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.elasticReady != prevProps.elasticReady) {
-            this.getData();
-        }
     }
 
     parseData(data) {
@@ -71,20 +59,6 @@ class TimeSelector extends Component {
         return output;
     }
 
-    /*
-     * Fetches the data from ElasticSearch
-     */
-    getData() {
-        const { elasticReady, client } = this.props;
-
-        if (elasticReady) {
-            getHourlyAggregates(client, 0, 0).then(data => {
-                console.log(data);
-                this.setState({data}); 
-            });
-        }
-    }
-
     onValueClick(d, obj) {
         this.props.setHourAndTimestamp(d.x0, d.timestamp);
     }
@@ -114,7 +88,7 @@ class TimeSelector extends Component {
                     <XAxis hideTicks hideLine />
                     <YAxis hideTicks hideLine />
                     <VerticalRectSeries
-                        data={this.parseData(this.state.data)}
+                        data={this.parseData(this.props.data)}
                         onValueClick={this.onValueClick}
                         onValueMouseOver={this.onValueMouseOver}
                         onValueMouseOut={this.onValueMouseOut}

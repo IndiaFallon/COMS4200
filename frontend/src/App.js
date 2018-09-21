@@ -6,7 +6,8 @@ import ElasticStatus from "./components/ElasticStatus";
 import Map from "./components/Map";
 import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
-import { getMapData, ELASTIC_CONFIG } from "./Elastic";
+import Loading from "./wrappers/Loading";
+import { getMapData, getHourlyAggregates, ELASTIC_CONFIG } from "./Elastic";
 
 class App extends Component {
 
@@ -19,8 +20,15 @@ class App extends Component {
             // The human readable status of the elasticsearch connection
             elasticStatus: "Not Connected",
 
-            // Dummy data
+            // TODO: Rename
+            // The geospatial data
             ipData: {},
+
+            // If the data is loading
+            ipDataLoading: false,
+
+            // The hourly aggregations for the TimeSelector
+            hourlyAggregates: [],
 
             // The selected hour
             selectedHour: null,
@@ -37,8 +45,7 @@ class App extends Component {
 
         // Bind functions
         this.setHourAndTimestamp = this.setHourAndTimestamp.bind(this);
-    }
-
+    } 
     componentDidMount() {
         // Update the state
         this.setState({elasticReady: false});
@@ -58,6 +65,10 @@ class App extends Component {
             this.setState({elasticReady: true});
             this.setState({elasticStatus: "Connected"});
 
+            // Get the hourly aggregates
+            getHourlyAggregates(client, 0, 0).then(d => this.setState({hourlyAggregates: d}));
+
+
         }).catch(err => {
             this.setState({elasticReady: false});
             this.setState({elasticStatus: "Down"});
@@ -76,16 +87,21 @@ class App extends Component {
                         selectedHour={this.state.selectedHour}
                         ipData={this.state.ipData} 
                     />
+                    <Loading
+                        hasLoaded={this.state.ipDataLoading == false}
+                        className="App-map-loader"
+                    />
                 </div>
 
                 <div className="App-time-selector">
-                    <TimeSelector 
-                        selectedHour={this.state.selectedHour}
-                        setHourAndTimestamp={this.setHourAndTimestamp}
+                    <Loading hasLoaded={this.state.hourlyAggregates.length != 0}>
+                        <TimeSelector 
+                            selectedHour={this.state.selectedHour}
+                            setHourAndTimestamp={this.setHourAndTimestamp}
 
-                        client={this.client}
-                        elasticReady={this.state.elasticReady}
-                    />
+                            data={this.state.hourlyAggregates}
+                        />
+                    </Loading>
                 </div>
 
                 <div className="App-sidebar">
@@ -111,7 +127,11 @@ class App extends Component {
             endTimestamp: endTimestamp
         });
 
-        getMapData(client, startTimestamp, endTimestamp).then(r => this.setState({ipData: r}));
+        this.setState({ipDataLoading: true});
+
+        getMapData(client, startTimestamp, endTimestamp).then(r => {
+            this.setState({ipData: r, ipDataLoading: false});
+        });
 
     }
 }
