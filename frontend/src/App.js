@@ -3,6 +3,7 @@ import elasticsearch from "elasticsearch";
 import "./App.scss";
 
 import ElasticStatus from "./components/ElasticStatus";
+import Header from "./components/Header";
 import Map from "./components/Map";
 import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
@@ -105,6 +106,7 @@ class App extends Component {
                 </div>
 
                 <div className="App-sidebar">
+                    <Header />
                     <ElasticStatus
                         client={this.client}
                         elasticReady={this.state.elasticReady}
