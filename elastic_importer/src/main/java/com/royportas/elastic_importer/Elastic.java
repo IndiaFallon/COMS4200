@@ -48,7 +48,7 @@ public class Elastic {
         this.port = 9200;
         this.method = "http";
 
-        this.index = "geonetflow2";
+        this.index = "geonetflow";
         this.type = "record";
 
         System.out.format(

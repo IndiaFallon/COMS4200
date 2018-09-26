@@ -30,7 +30,12 @@ dependencies {
 
 compileJava {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+    // Java version to use
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
