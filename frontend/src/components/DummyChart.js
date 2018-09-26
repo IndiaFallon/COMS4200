@@ -1,3 +1,9 @@
+/**
+ * A test chart to show functionality
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React, { Component } from "react";
 import {
     FlexibleXYPlot,

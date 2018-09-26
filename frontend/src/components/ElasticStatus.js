@@ -1,5 +1,7 @@
 /**
  * Displays details about the elasticsearch connection
+ *
+ * @author Roy Portas <royportas@gmail.com>
  */
 
 import React, { Component} from "react";

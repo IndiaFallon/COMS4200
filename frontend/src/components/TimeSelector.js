@@ -1,3 +1,9 @@
+/**
+ * Allows the user to select times
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React, { Component } from "react";
 import {
     Crosshair,

@@ -1,5 +1,7 @@
 /**
  * A basic card for the sidebar
+ *
+ * @author Roy Portas <royportas@gmail.com>
  */
 
 import React, { Component} from "react";

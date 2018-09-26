@@ -1,3 +1,9 @@
+/**
+ * The entrypoint
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App.js";

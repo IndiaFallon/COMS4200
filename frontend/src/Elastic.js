@@ -1,5 +1,7 @@
 /**
  * Contains general methods for interacting with the elasticsearch API
+ *
+ * @author Roy Portas <royportas@gmail.com>
  */
 
 export const ELASTIC_CONFIG = {

@@ -1,3 +1,9 @@
+/**
+ * The main component for the application
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React, { Component } from "react";
 import elasticsearch from "elasticsearch";
 import "./App.scss";

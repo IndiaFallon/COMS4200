@@ -1,6 +1,8 @@
 /**
  * Used to give a component a loading state,
  * in which a spinner is displayed
+ *
+ * @author Roy Portas <royportas@gmail.com>
  */
 import React from "react";
 

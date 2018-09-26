@@ -1,3 +1,9 @@
+/**
+ * The 3D map component
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React, { Component } from "react";
 
 import DeckGL, { ArcLayer } from "deck.gl";

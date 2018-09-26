@@ -1,3 +1,9 @@
+/*
+ * The header displayed in the sidebar
+ *
+ * @author Roy Portas <royportas@gmail.com>
+ */
+
 import React from "react";
 import "./Header.scss";
 
