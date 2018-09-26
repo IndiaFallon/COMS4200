@@ -73,3 +73,17 @@ The format of the path is similar to `path.repo` path added earlier.
 Finally run the script within a bash environment (either Terminal for Mac or Git Bash for Windows). Git Bash was installed with the Git for Windows package.
 
 Run the script using `./load_snapshots.sh`
+
+## Fixing CORS Issues
+
+Set the following options in the config:
+- `http.cors.enabled: true`
+- `http.cors.allow-origin: "*"`
+
+## Running Kibana
+On Windows open either command prompt or powershell with **admin** privileges and go to 
+`C:\ProgramData\chocolatey\lib\kibana\tools\kibana-6.2.4-windows-x86_64\bin` and run
+
+```
+kibana
+```
