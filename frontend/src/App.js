@@ -9,7 +9,6 @@ import elasticsearch from "elasticsearch";
 import "./App.scss";
 
 import ElasticStatus from "./components/ElasticStatus";
-import Header from "./components/Header";
 import Map from "./components/Map";
 import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
@@ -43,6 +42,9 @@ class App extends Component {
             // The start and end timestamp
             startTimestamp: null,
             endTimestamp: null,
+
+            // Used to toggle the time selector
+            timeSelectorVisible: true,
         };
 
         // The elasticsearch cluster
@@ -52,6 +54,7 @@ class App extends Component {
 
         // Bind functions
         this.setHourAndTimestamp = this.setHourAndTimestamp.bind(this);
+        this.toggleTimeSelector = this.toggleTimeSelector.bind(this);
     } 
     componentDidMount() {
         // Update the state
@@ -89,6 +92,9 @@ class App extends Component {
     render(){
         return(
             <div className="App">
+
+                <img src="/logo.png" className="App-logo" />
+
                 <div className="App-map">
                     <Map
                         selectedHour={this.state.selectedHour}
@@ -102,11 +108,31 @@ class App extends Component {
 
                 <div className="App-time-selector">
 
-                    <div className="App-time-selector-header">
+                    <div onClick={this.toggleTimeSelector} className="App-time-selector-header">
                         Hide/Show
                     </div>
 
-                    <Loading hasLoaded={this.state.hourlyAggregates.length != 0}>
+                    { this.renderTimeSelector() }
+                </div>
+
+                <div className="App-sidebar">
+                    <ElasticStatus
+                        client={this.client}
+                        elasticReady={this.state.elasticReady}
+                        elasticStatus={this.state.elasticStatus}
+                    />
+
+                    <DummyChart />
+                </div>
+            </div>
+        );
+    }
+
+    renderTimeSelector() {
+        if (this.state.timeSelectorVisible) {
+            return (
+                <div style={{height: "200px"}}>
+                    <Loading hasLoaded={this.state.hourlyAggregates.length != 0} >
                         <TimeSelector 
                             selectedHour={this.state.selectedHour}
                             setHourAndTimestamp={this.setHourAndTimestamp}
@@ -115,22 +141,16 @@ class App extends Component {
                         />
                     </Loading>
                 </div>
+            );
+        } else {
+            return (
+                <div style={{height: "20px"}} />
+            );
+        }
+    }
 
-                <div className="App-sidebar">
-                    <div className="App-sidebar-inner">
-                        <Header />
-
-                        <ElasticStatus
-                            client={this.client}
-                            elasticReady={this.state.elasticReady}
-                            elasticStatus={this.state.elasticStatus}
-                        />
-
-                        <DummyChart />
-                    </div>
-                </div>
-            </div>
-        );
+    toggleTimeSelector() {
+        this.setState({timeSelectorVisible: !this.state.timeSelectorVisible});
     }
 
     setHourAndTimestamp(hour, timestamp) {

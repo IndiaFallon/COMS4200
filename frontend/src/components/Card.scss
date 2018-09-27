@@ -1,5 +1,33 @@
+
+$border-radius: 6px;
+
 .Card {
     margin: 20px;
+    border-radius: $border-radius;
+
+    background: rgb(64,60,80);
+
+    -webkit-box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
+    -moz-box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
+    box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
+
+}
+
+.Card-header {
+    border-radius: $border-radius $border-radius 0px 0px;
+
+    background: rgb(120,61,189);
+    background: linear-gradient(124deg, rgba(120,61,189,1) 0%, rgba(71,14,145,1) 100%, rgba(43,13,180,1) 100%);
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.Card-header-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
 }
 
 .Card-content {

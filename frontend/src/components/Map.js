@@ -109,8 +109,8 @@ class Map extends Component {
                     getTargetPosition: d => {
                         return [d.dstLon, d.dstLat];
                     },
-                    getSourceColor: d => [0, 255, 0],
-                    getTargetColor: d => [255, 0, 0, this.state.alpha],
+                    getSourceColor: d => [0, 212, 255],
+                    getTargetColor: d => [255, 188, 0, this.state.alpha],
                     updateTriggers: {
                         getTargetColor: this.state.alpha,
                     },

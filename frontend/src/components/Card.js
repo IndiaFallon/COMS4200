@@ -26,16 +26,18 @@ class Card extends Component {
         const { title } = this.props;
 
         return(
-            <div className="card Card">
-                <header className="card-header">
-                    <p className="card-header-title">
+            <div className="Card">
+                <header className="Card-header">
+                    <p className="Card-header-title">
                         {title}
                     </p>
+                    {/*
                     <a onClick={this.toggleHidden} className="card-header-icon">
                         <span className="icon">
                             {this.renderArrow()}
                         </span>
                     </a>
+                    */}
                 </header>
 
                 {this.renderContent()}

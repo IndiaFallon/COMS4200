@@ -1,36 +1,33 @@
 .App {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    grid-template-rows: auto 20%;
-    grid-template-areas: 
-        "map sidebar"
-        "timeselector sidebar";
-
     height: 100%;
-
 }
 
-.App-map {
-    grid-area: map;
-
-    position: relative;
+.App-container {
+    height: 100%;
 }
 
-.App-map-loader {
-
+.App-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 200px;
+    z-index: 10;
 }
 
 .App-time-selector {
-    grid-area: timeselector;
-
     background: rgb(149,96,210);
     background: linear-gradient(124deg, rgba(149,96,210,1) 0%, rgba(51,14,145,1) 79%, rgba(43,13,180,1) 100%);
 
-    -webkit-box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
-    -moz-box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
-    box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
+    -webkit-box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
+    -moz-box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
+    box-shadow: 0px 0px 46px 3px rgba(23,20,27,1);
 
-    position: relative;
+    z-index: 10;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .App-time-selector-header {
@@ -61,15 +58,7 @@
 }
 
 .App-sidebar {
-    grid-area: sidebar;
-    border: 1px black;
-
-    background: rgb(149,96,210);
-    background: linear-gradient(180deg, rgba(149,96,210,1) 0%, rgba(43,13,180,1) 67%, rgba(71,14,145,1) 100%);
-}
-
-.App-sidebar-inner {
-    height: 100%;
-    margin-left: 3px;
-    background: black;
+    position: absolute;
+    right: 0;
+    width: 300px;
 }

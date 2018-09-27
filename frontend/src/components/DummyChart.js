@@ -35,7 +35,7 @@ class DummyChart extends Component {
                     <FlexibleXYPlot>
                         <XAxis />
                         <YAxis />
-                        <LineSeries data={data} />
+                        <LineSeries data={data} style={{stroke: "#8d3af9"}} />
                     </FlexibleXYPlot>
                 </div>
             </Card>

@@ -87,53 +87,61 @@ class TimeSelector extends Component {
 
     render() {
         return (
-            <div className="TimeSelector">
+            <div className={this.props.className + " TimeSelector"}>
                 <p>
                     Click on one of the below boxes to show the
                     traffic data on the map above
                 </p>
 
                 <div className="TimeSelector-chart">
-                    <FlexibleXYPlot
-                        xDomain={[1, 24]}
+                    <div style={{
+                        position: "absolute",
+                        top: "0",
+                        right: "0",
+                        left: "0",
+                        bottom: "0"
+                    }}>
+                        <FlexibleXYPlot
+                            xDomain={[1, 24]}
 
-                        colorType="category"
-                        colorRange={this.colorRange}
-                        colorDomain={[0, 1, 2]}
-                        strokeRange={this.strokeRange}
-                        strokeDomain={[0, 1]}
+                            colorType="category"
+                            colorRange={this.colorRange}
+                            colorDomain={[0, 1, 2]}
+                            strokeRange={this.strokeRange}
+                            strokeDomain={[0, 1]}
 
-                        margin={{left: 40, right: 40, top: 20, bottom: 30}}
-                    >
-                        <XAxis
-                            tickFormat={d => {
-                                if (d == 12) {
-                                    return "12pm";
-                                } else if (d == 24) {
-                                    return "12am";
-                                } else if (d > 12) {
-                                    return `${d-12}pm`;
-                                }
+                            margin={{left: 40, right: 40, top: 20, bottom: 30}}
+                        >
+                            <XAxis
+                                tickFormat={d => {
+                                    if (d == 12) {
+                                        return "12pm";
+                                    } else if (d == 24) {
+                                        return "12am";
+                                    } else if (d > 12) {
+                                        return `${d-12}pm`;
+                                    }
 
-                                return `${d}am`;
-                            }}
-                            style={{
-                                line: { stroke: "white" },
-                                ticks: { stroke: "white" },
-                                text: { stroke: "none", fill: "white" },
-                            }}
-                        />
-                        <YAxis hideTicks hideLine />
-                        <VerticalRectSeries
-                            data={this.parseData(this.props.data)}
-                            onValueClick={this.onValueClick}
-                            onValueMouseOver={this.onValueMouseOver}
-                            onValueMouseOut={this.onValueMouseOut}
-                            style={{
-                                strokeWidth: "0.5px",
-                            }}
-                        />
-                    </FlexibleXYPlot>
+                                    return `${d}am`;
+                                }}
+                                style={{
+                                    line: { stroke: "white" },
+                                    ticks: { stroke: "white" },
+                                    text: { stroke: "none", fill: "white" },
+                                }}
+                            />
+                            <YAxis hideTicks hideLine />
+                            <VerticalRectSeries
+                                data={this.parseData(this.props.data)}
+                                onValueClick={this.onValueClick}
+                                onValueMouseOver={this.onValueMouseOver}
+                                onValueMouseOut={this.onValueMouseOut}
+                                style={{
+                                    strokeWidth: "0.5px",
+                                }}
+                            />
+                        </FlexibleXYPlot>
+                    </div>
                 </div>
 
                 <p>Hours</p>
