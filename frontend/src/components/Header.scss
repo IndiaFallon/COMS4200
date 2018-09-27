@@ -1,5 +1,10 @@
 .Header {
-    background: #71e5ff;
-    color: white;
     padding: 2rem;
+
+    background: rgb(149,96,210);
+    background: linear-gradient(124deg, rgba(149,96,210,1) 0%, rgba(71,14,145,1) 100%, rgba(43,13,180,1) 100%);
+}
+
+.Header-title {
+    color: white !important;
 }

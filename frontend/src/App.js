@@ -101,6 +101,11 @@ class App extends Component {
                 </div>
 
                 <div className="App-time-selector">
+
+                    <div className="App-time-selector-header">
+                        Hide/Show
+                    </div>
+
                     <Loading hasLoaded={this.state.hourlyAggregates.length != 0}>
                         <TimeSelector 
                             selectedHour={this.state.selectedHour}
@@ -112,14 +117,17 @@ class App extends Component {
                 </div>
 
                 <div className="App-sidebar">
-                    <Header />
-                    <ElasticStatus
-                        client={this.client}
-                        elasticReady={this.state.elasticReady}
-                        elasticStatus={this.state.elasticStatus}
-                    />
+                    <div className="App-sidebar-inner">
+                        <Header />
 
-                    <DummyChart />
+                        <ElasticStatus
+                            client={this.client}
+                            elasticReady={this.state.elasticReady}
+                            elasticStatus={this.state.elasticStatus}
+                        />
+
+                        <DummyChart />
+                    </div>
                 </div>
             </div>
         );

@@ -3,5 +3,14 @@
 .TimeSelector {
     width: 100%;
     height: 100%;
-    background: $card-background-color;
+
+    color: white;
+    text-align: center;
+    
+    padding-top: 20px;
+}
+
+.TimeSelector-chart {
+    height: 66%;
+    padding-bottom: 10px;
 }

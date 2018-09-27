@@ -22,9 +22,54 @@
 
 .App-time-selector {
     grid-area: timeselector;
+
+    background: rgb(149,96,210);
+    background: linear-gradient(124deg, rgba(149,96,210,1) 0%, rgba(51,14,145,1) 79%, rgba(43,13,180,1) 100%);
+
+    -webkit-box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
+    -moz-box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
+    box-shadow: 0px 0px 14px 1px rgba(62,10,144,0.64);
+
+    position: relative;
+}
+
+.App-time-selector-header {
+    position: absolute;
+    left: 40%;
+    right: 40%;
+    top: -10px;
+    height: 20px;
+
+    border-radius: 25px;
+    -webkit-box-shadow: 0px 0px 11px 2px rgba(62,10,144,0.64);
+    -moz-box-shadow: 0px 0px 11px 2px rgba(62,10,144,0.64);
+    box-shadow: 0px 0px 11px 2px rgba(62,10,144,0.64);
+
+    background: rgb(120,61,189);
+    background: linear-gradient(124deg, rgba(120,61,189,1) 0%, rgba(71,14,145,1) 100%, rgba(43,13,180,1) 100%);
+
+    color: white;
+    text-align: center;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.App-time-selector-header:hover {
+    background: rgb(144,95,201);
+    background: linear-gradient(124deg, rgba(144,95,201,1) 0%, rgba(108,48,185,1) 100%, rgba(43,13,180,1) 100%);
 }
 
 .App-sidebar {
     grid-area: sidebar;
     border: 1px black;
+
+    background: rgb(149,96,210);
+    background: linear-gradient(180deg, rgba(149,96,210,1) 0%, rgba(43,13,180,1) 67%, rgba(71,14,145,1) 100%);
+}
+
+.App-sidebar-inner {
+    height: 100%;
+    margin-left: 3px;
+    background: black;
 }

@@ -10,7 +10,7 @@ import "./Header.scss";
 function Header(props) {
     return (
         <div className="Header">
-            <h1 className="subtitle is-3"><i className="far fa-eye"></i> TrafficVis</h1>
+            <h1 className="Header-title subtitle is-3"><i className="far fa-eye"></i> TrafficVis</h1>
         </div>
     );
 }
