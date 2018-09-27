@@ -27,13 +27,12 @@ class TimeSelector extends Component {
         // - 1 is the selected colour
         this.colorRange = [
             "rgba(255, 255, 255, 0.2)",
-            "null",
+            "rgba(255, 255, 255, 0.6)",
             "rgba(255, 255, 255, 1)",
         ];
 
         this.strokeRange = [
             "rgba(255, 255, 255, 1)",
-            "#71e5ff",
         ];
 
         this.onValueClick = this.onValueClick.bind(this);
@@ -54,8 +53,7 @@ class TimeSelector extends Component {
             if (hour == selectedHour) {
                 color = 2;
             } else if (hour == this.state.hoveredHour) {
-                // color = 1;
-                stroke = 1;
+                color = 1;
             }
 
             output.push({
@@ -144,7 +142,7 @@ class TimeSelector extends Component {
                     </div>
                 </div>
 
-                <p>Hours</p>
+                <p>Time</p>
             </div>
         );
     }

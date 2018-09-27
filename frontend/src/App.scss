@@ -14,6 +14,11 @@
     z-index: 10;
 }
 
+.App-map {
+    height: 100%;
+    width: 100%;
+}
+
 .App-time-selector {
     background: rgb(149,96,210);
     background: linear-gradient(124deg, rgba(149,96,210,1) 0%, rgba(51,14,145,1) 79%, rgba(43,13,180,1) 100%);
@@ -60,5 +65,8 @@
 .App-sidebar {
     position: absolute;
     right: 0;
+    top: 0;
     width: 300px;
+    bottom: 0;
+    overflow: auto;
 }
