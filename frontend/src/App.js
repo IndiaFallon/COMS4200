@@ -12,6 +12,8 @@ import ElasticStatus from "./components/ElasticStatus";
 import Map from "./components/Map";
 import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
+import ProtocolChart from "./components/ProtocolChart";
+import ProtocolFilter from "./components/ProtocolFilter";
 import Loading from "./wrappers/Loading";
 import { getMapData, getHourlyAggregates, ELASTIC_CONFIG } from "./Elastic";
 
@@ -45,6 +47,9 @@ class App extends Component {
 
             // Used to toggle the time selector
             timeSelectorVisible: true,
+
+            // The protocol filter
+            filter: {}
         };
 
         // The elasticsearch cluster
@@ -55,7 +60,9 @@ class App extends Component {
         // Bind functions
         this.setHourAndTimestamp = this.setHourAndTimestamp.bind(this);
         this.toggleTimeSelector = this.toggleTimeSelector.bind(this);
+        this.handleFilterChange = this.handleFilterChange.bind(this);
     } 
+
     componentDidMount() {
         // Update the state
         this.setState({elasticReady: false});
@@ -97,7 +104,6 @@ class App extends Component {
 
                 <div className="App-map">
                     <Map
-                        selectedHour={this.state.selectedHour}
                         ipData={this.state.ipData} 
                     />
                     <Loading
@@ -122,7 +128,11 @@ class App extends Component {
                         elasticStatus={this.state.elasticStatus}
                     />
 
+                    <ProtocolFilter onChange={this.handleFilterChange} />
+
                     <DummyChart />
+
+                    <ProtocolChart />
                 </div>
             </div>
         );
@@ -165,10 +175,31 @@ class App extends Component {
 
         this.setState({ipDataLoading: true});
 
-        getMapData(client, startTimestamp, endTimestamp).then(r => {
-            this.setState({ipData: r, ipDataLoading: false});
-        });
+        const filter = this.state.filter;
 
+        getMapData(client, startTimestamp, endTimestamp, filter.protocolName, filter.protocolMap)
+            .then(r => {
+                this.setState({ipData: r, ipDataLoading: false});
+            });
+    }
+
+    handleFilterChange(newFilter) {
+        const startTimestamp = this.state.startTimestamp;
+        const endTimestamp = this.state.endTimestamp;
+
+        this.setState({filter: newFilter});
+
+        if (!startTimestamp || !endTimestamp) {
+            // Don't query elastic
+            return;
+        }
+
+        this.setState({ipDataLoading: true});
+
+        getMapData(client, startTimestamp, endTimestamp, newFilter.protocolName, newFilter.protocolMap)
+            .then(r => {
+                this.setState({ipData: r, ipDataLoading: false});
+            });
     }
 }
 

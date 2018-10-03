@@ -26,7 +26,40 @@ export function getDocumentCount(client) {
     });
 }
 
-export function getMapData(client, startTime, endTime) {
+export function getMapData(client, startTime, endTime, protocolName, protocolMap) {
+
+    let filterField;
+
+    if (!protocolName && !protocolMap) {
+        filterField = {
+            "match_all": {}
+        };
+    } else if (protocolMap && protocolName) {
+        filterField = {
+            "query_string": {
+                "query": "L7_PROTO_NAME:" + protocolName + " AND PROTOCOL_MAP:" + protocolMap,
+                "analyze_wildcard": true,
+                "default_field": "*",
+            }
+        };
+    } else if (protocolName) {
+        filterField = {
+            "query_string": {
+                "query": "L7_PROTO_NAME:" + protocolName,
+                "analyze_wildcard": true,
+                "default_field": "*",
+            }
+        };
+    } else if (protocolMap) {
+        filterField = {
+            "query_string": {
+                "query": "PROTOCOL_MAP:" + protocolMap,
+                "analyze_wildcard": true,
+                "default_field": "*",
+            }
+        };
+    }
+
     return client.search({
         index: ELASTIC_CONFIG.index,
         type: ELASTIC_CONFIG.type,
@@ -90,9 +123,7 @@ export function getMapData(client, startTime, endTime) {
             "query": {
                 "bool": {
                     "must": [
-                        {
-                            "match_all": {}
-                        },
+                        filterField,
                         {
                             "range": {
                                 "@timestamp": {
