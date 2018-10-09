@@ -14,8 +14,9 @@ import TimeSelector from "./components/TimeSelector";
 import DummyChart from "./components/DummyChart";
 import ProtocolChart from "./components/ProtocolChart";
 import ProtocolFilter from "./components/ProtocolFilter";
+import BarChart from "./components/BarChart";
 import Loading from "./wrappers/Loading";
-import { getMapData, getHourlyAggregates, ELASTIC_CONFIG } from "./Elastic";
+import { getTopDstPorts, getTopSourceVlanByConnectionCount, getMapData, getHourlyAggregates, ELASTIC_CONFIG } from "./Elastic";
 
 class App extends Component {
 
@@ -37,6 +38,12 @@ class App extends Component {
 
             // The hourly aggregations for the TimeSelector
             hourlyAggregates: [],
+
+            // The top source vlans by connection count
+            sourceVlanConnectionCount: [],
+
+            // The top dst ports
+            dstPorts: [],
 
             // The selected hour
             selectedHour: null,
@@ -84,7 +91,10 @@ class App extends Component {
 
             // Get the hourly aggregates
             getHourlyAggregates(client, 0, 0).then(d => this.setState({hourlyAggregates: d}));
+            
+            getTopSourceVlanByConnectionCount(client).then(d => this.setState({sourceVlanConnectionCount: d}));
 
+            getTopDstPorts(client).then(d => this.setState({dstPorts: d}));
 
         }).catch(err => {
             this.setState({elasticReady: false});
@@ -130,9 +140,9 @@ class App extends Component {
 
                     <ProtocolFilter onChange={this.handleFilterChange} />
 
-                    <DummyChart />
+                    <BarChart title="Source VLANS by Connections" data={this.state.sourceVlanConnectionCount} />
 
-                    <ProtocolChart />
+                    <BarChart title="Top Destination Ports" data={this.state.dstPorts} />
                 </div>
             </div>
         );

@@ -232,3 +232,144 @@ export function getHourlyAggregates(client, startTime, endTime) {
         return [];
     });
 }
+
+/**
+ * Returns the top 10 vlans based off connection count
+ */
+export function getTopSourceVlanByConnectionCount(client) {
+    return client.search({
+        index: ELASTIC_CONFIG.index,
+        type: ELASTIC_CONFIG.type,
+        // Query from Kibana
+        body: {
+            "size": 0,
+            "_source": {
+                "excludes": []
+            },
+            "aggs": {
+                "vlans": {
+                    "terms": {
+                        "field": "SRC_VLAN",
+                        "size": 10,
+                        "order": {
+                            "_count": "desc"
+                        }
+                    }
+                }
+            },
+            "stored_fields": [
+                "*"
+            ],
+            "script_fields": {},
+            "docvalue_fields": [
+                "@timestamp"
+            ],
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": 1380861366908,
+                                    "lte": 1538627766908,
+                                    "format": "epoch_millis"
+                                }
+                            }
+                        }
+                    ],
+                    "filter": [],
+                    "should": [],
+                    "must_not": []
+                }
+            }
+        }
+    }).then(resp => {
+        if (resp) {
+            const values = resp.aggregations.vlans.buckets.map(bucket => {
+                return {
+                    x: bucket.key.toString(),
+                    y: bucket.doc_count,
+                }
+            });
+
+            return values;
+
+        }
+
+        return [];
+    });
+}
+
+
+/**
+ * Returns the top 10 destination ports
+ */
+export function getTopDstPorts(client) {
+    return client.search({
+        index: ELASTIC_CONFIG.index,
+        type: ELASTIC_CONFIG.type,
+        // Query from Kibana
+        body: {
+            "size": 0,
+            "_source": {
+                "excludes": []
+            },
+            "aggs": {
+                "ports": {
+                    "terms": {
+                        "field": "L4_DST_PORT",
+                        "size": 10,
+                        "order": {
+                            "_count": "desc"
+                        }
+                    }
+                }
+            },
+            "stored_fields": [
+                "*"
+            ],
+            "script_fields": {},
+            "docvalue_fields": [
+                "@timestamp"
+            ],
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": 1475410632798,
+                                    "lte": 1538482632799,
+                                    "format": "epoch_millis"
+                                }
+                            }
+                        }
+                    ],
+                    "filter": [],
+                    "should": [],
+                    "must_not": []
+                }
+            }
+        }
+    }).then(resp => {
+        if (resp) {
+            const values = resp.aggregations.ports.buckets.map(bucket => {
+                return {
+                    x: bucket.key.toString(),
+                    y: bucket.doc_count,
+                }
+            });
+
+            return values;
+
+        }
+
+        return [];
+    });
+}
