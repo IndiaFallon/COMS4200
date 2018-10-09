@@ -1,0 +1,46 @@
+{
+  "size": 0,
+  "_source": {
+    "excludes": []
+  },
+  "aggs": {
+    "2": {
+      "terms": {
+        "field": "SRC_VLAN",
+        "size": 10,
+        "order": {
+          "_count": "desc"
+        }
+      }
+    }
+  },
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {},
+  "docvalue_fields": [
+    "@timestamp"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "gte": 1380861366908,
+              "lte": 1538627766908,
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ],
+      "filter": [],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+
