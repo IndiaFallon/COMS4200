@@ -1,4 +1,7 @@
-# COMS4200 Project
+<h1 align="center">InterVis - COMS4200 Project</h1>
+
+![demo](dashboard.png)
+
 
 ## Requirements
 
@@ -86,4 +89,18 @@ On Windows open either command prompt or powershell with **admin** privileges an
 
 ```
 kibana
+```
+
+# Running the Frontend
+
+To run the frontend `nodejs` needs to be installed
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Run it
+npm run start
 ```
